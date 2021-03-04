@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 5
+#define MAX_SIZE 4
 
 // Structs
 struct HashMap
@@ -27,21 +27,24 @@ int main(int argc, char *argv[])
 	{
 		buffer[count] = ch;
 
-		if(ch == ' ')
+		if(ch == ' ' || ch == '\n' || count == 4)
 		{
+			printf("%s\n", buffer);	
 			
+			for(int i = 0; i < count; i++)
+			{
+				buffer[i] = ' '; 
+			}	
+
 			count = 0;
 		}
 		else
 		{
-			//
+			// Add character to char array
+			buffer[count] = ch;
 			
 			count++;
 		}
-
-		printf("Char: ");
-		putchar(ch);
-		printf("\n");
 	}
 
 	return 0;
