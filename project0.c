@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define TRUE 1
+#define FALSE 0
+
 #define MAX_CHAR_SIZE 5
+
 
 // Structs
 struct HashMap
@@ -21,10 +25,11 @@ int main(int argc, char *argv[])
 	char *buffer;
 	int count = 0;
 	char ch;
+	short isFirstByte = 1;
 	struct HashMap *map;	
 
 	// Initialize the buffer array
-	buffer = (char*)malloc(sizeof(char) * MAX_CHAR_SIZE);
+	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 	buffer[4] = '\0';
 
 
@@ -32,8 +37,17 @@ int main(int argc, char *argv[])
 	// Will then add the char to the map and increase the count of each character
 	while((ch = getchar()) != EOF)
 	{
-		// TODO: Add a better way to detect an end of character
-		// Can use the first 3 bits to determine what the number of bytes are
+		// Use this short variable to determine if the byte that is being read is the first bit or not
+		// 1 will denote this is the first byte, 0 will denote it is not
+		if(isFirstByte == 1)
+		{
+			// Now, read first 3 btis to determine how many bytes the Unicode character is
+			char byteCheck = ch | 0b1110000;
+
+
+			isFirstBit = 0;
+		}
+		
 		if(ch == ' ' || count == 4)
 		{
 			printf("%s\n", buffer);	
