@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 4
+#define MAX_SIZE 5
 
 // Structs
 struct HashMap
@@ -18,11 +18,18 @@ void printOutput(int* array);
 int main(int argc, char *argv[])
 {
 	// Variables
-	char buffer[MAX_SIZE];
+	char *buffer;
 	int count = 0;
 	char ch;
 	struct HashMap *map;	
 
+	// Initialize the buffer array
+	buffer = (char*)malloc(MAX_SIZE);
+	buffer[4] = '\0';
+
+
+	// Main while loop to get characters from STDIN
+	// Will then 
 	while((ch = getchar()) != EOF)
 	{
 		buffer[count] = ch;
