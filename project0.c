@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 5
+#define MAX_CHAR_SIZE 5
 
 // Structs
 struct HashMap
 {
-	char key;
+	char *key[MAX_CHAR_SIZE];
 	int value;
 };
 
@@ -24,23 +24,23 @@ int main(int argc, char *argv[])
 	struct HashMap *map;	
 
 	// Initialize the buffer array
-	buffer = (char*)malloc(MAX_SIZE);
+	buffer = (char*)malloc(sizeof(char) * MAX_CHAR_SIZE);
 	buffer[4] = '\0';
 
 
 	// Main while loop to get characters from STDIN
-	// Will then 
+	// Will then add the char to the map and increase the count of each character
 	while((ch = getchar()) != EOF)
 	{
-		buffer[count] = ch;
-
-		if(ch == ' ' || ch == '\n' || count == 4)
+		// TODO: Add a better way to detect an end of character
+		// Can use the first 3 bits to determine what the number of bytes are
+		if(ch == ' ' || count == 4)
 		{
 			printf("%s\n", buffer);	
 			
 			for(int i = 0; i < count; i++)
 			{
-				buffer[i] = ' '; 
+				buffer[i] = 0; 
 			}	
 
 			count = 0;
