@@ -9,9 +9,11 @@ typedef enum {false, true} bool;
 // Structs
 struct DoubleArray
 {
-	char *key[];
-	int *values[];
-};
+	char *key;
+	int *values;
+
+	int indexCount = 0;
+}
 
 // Prototype Functions
 void printOutput(struct HashMap *map);
@@ -25,19 +27,23 @@ int main(int argc, char *argv[])
 	int count = 1;
 	bool isFirstByte = true;
 	int numBytes;
-	struct DoubleArray *array;	
+	struct DoubleArray array;	
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 	buffer[MAX_CHAR_SIZE - 1] = '\0';
 
+	// Initialize the double array
+	array.key = (char*)calloc(32, sizeof(char));
+	array.values = (int*)calloc(32, sizeof(int));
 
 	// Main while loop to get characters from STDIN
-	// Will then add the char to the map and increase the count of each character
+	// Will then add the char to the char array and increase the count of each character
+	// TODO: Add characters and count to arrays
 	char ch;
 	while((ch = getchar()) != EOF)
 	{
-		// 
+		// If this byte is the first byte, then need to determine how many total bytes
 		if(isFirstByte)
 		{
 			numBytes = numBytes(ch);
@@ -48,11 +54,12 @@ int main(int argc, char *argv[])
 
 			buffer[0] = ch;
 
-			isFirstByte = FALSE;
+			isFirstByte = false;
 		}
 		
 		if(ch == ' ' || count == numBytes)
-		{
+		{	
+			// Print for testing
 			printf("%s\n", buffer);	
 			
 			for(int i = 0; i < count; i++)
@@ -61,6 +68,8 @@ int main(int argc, char *argv[])
 			}	
 
 			count = 0;
+
+			isFirstByte = true;
 		}
 		else
 		{
@@ -90,17 +99,36 @@ void printOutput()
 }
 
 /*
- *
+ * A function that returns the total number of bytes of a unicode character
+ * based on the control bits 
  */
 int numBytes(char checkByte)
 {
+	// First, check the high order bit
+	char highOrderBit = CheckByte & 0x80;
+	if(highOrderBit == 0)
+	{
+		// If high-order bit is 0, then the character is an ASCII character
+		return 1;
+	}
+
+
 	// Use an & bitwise operator in order to keep the first 4 bits intact while having the last 4 be 0
-	char firstFour = checkByte & 11110000;
+	// 0xF0 = 0b11110000
+	char firstFour = checkByte & 0xF0;
 
 	// Use the switch statement to match the high order bits
 	switch(firstFour)
 	{
+		// 0b11000000 - Two byte long unicode character
+		case 0xC0:
+			return 2;
 		
+		// 0b11100000 - Three byte long unicode character
+		case 0xE0:
+			return 3;
+
+		// If the byte does not match, can return 0 to signify an error
 		default:
 			return 0;
 			break;
