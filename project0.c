@@ -1,54 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TRUE 1
-#define FALSE 0
-
 #define MAX_CHAR_SIZE 5
 
+// Typedefs
+typedef enum {false, true} bool;
 
 // Structs
-struct HashMap
+struct DoubleArray
 {
-	char *key[MAX_CHAR_SIZE];
-	int value;
+	char *key[];
+	int *values[];
 };
 
 // Prototype Functions
-void printOutput(int* array);
-
+void printOutput(struct HashMap *map);
+int numBytes(char checkByte);
 
 // Main Function
 int main(int argc, char *argv[])
 {
 	// Variables
 	char *buffer;
-	int count = 0;
-	char ch;
-	short isFirstByte = 1;
-	struct HashMap *map;	
+	int count = 1;
+	bool isFirstByte = true;
+	int numBytes;
+	struct DoubleArray *array;	
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
-	buffer[4] = '\0';
+	buffer[MAX_CHAR_SIZE - 1] = '\0';
 
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the map and increase the count of each character
+	char ch;
 	while((ch = getchar()) != EOF)
 	{
-		// Use this short variable to determine if the byte that is being read is the first bit or not
-		// 1 will denote this is the first byte, 0 will denote it is not
-		if(isFirstByte == 1)
+		// 
+		if(isFirstByte)
 		{
-			// Now, read first 3 btis to determine how many bytes the Unicode character is
-			char byteCheck = ch | 0b1110000;
+			numBytes = numBytes(ch);
 
+			// Check for error
+			if(numBytes == 0)
+				return -1;
 
-			isFirstBit = 0;
+			buffer[0] = ch;
+
+			isFirstByte = FALSE;
 		}
 		
-		if(ch == ' ' || count == 4)
+		if(ch == ' ' || count == numBytes)
 		{
 			printf("%s\n", buffer);	
 			
@@ -68,5 +71,38 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	printOutput(map);
+
 	return 0;
+}
+
+
+
+// Function Declarations
+
+/*
+ *
+ */
+void printOutput()
+{
+	
+
+}
+
+/*
+ *
+ */
+int numBytes(char checkByte)
+{
+	// Use an & bitwise operator in order to keep the first 4 bits intact while having the last 4 be 0
+	char firstFour = checkByte & 11110000;
+
+	// Use the switch statement to match the high order bits
+	switch(firstFour)
+	{
+		
+		default:
+			return 0;
+			break;
+	}
 }
