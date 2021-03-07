@@ -3,21 +3,15 @@
 
 #define MAX_CHAR_SIZE 5
 
+
 // Typedefs
 typedef enum {false, true} bool;
 
-// Structs
-struct DoubleArray
-{
-	char *key;
-	int *values;
-
-	int indexCount = 0;
-}
 
 // Prototype Functions
 void printOutput(struct HashMap *map);
 int numBytes(char checkByte);
+
 
 // Main Function
 int main(int argc, char *argv[])
@@ -27,15 +21,10 @@ int main(int argc, char *argv[])
 	int count = 1;
 	bool isFirstByte = true;
 	int numBytes;
-	struct DoubleArray array;	
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 	buffer[MAX_CHAR_SIZE - 1] = '\0';
-
-	// Initialize the double array
-	array.key = (char*)calloc(32, sizeof(char));
-	array.values = (int*)calloc(32, sizeof(int));
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
@@ -51,6 +40,9 @@ int main(int argc, char *argv[])
 			// Check for error
 			if(numBytes == 0)
 				return -1;
+
+			// Print for testing
+			printf("%d bytes: ", numBytes);
 
 			buffer[0] = ch;
 
@@ -101,10 +93,12 @@ void printOutput()
 /*
  * A function that returns the total number of bytes of a unicode character
  * based on the control bits 
+ * Could also implement as a for loop that counts the number of ones
  */
 int numBytes(char checkByte)
 {
 	// First, check the high order bit
+	// 0x80 = 0b10000000
 	char highOrderBit = CheckByte & 0x80;
 	if(highOrderBit == 0)
 	{
@@ -127,6 +121,10 @@ int numBytes(char checkByte)
 		// 0b11100000 - Three byte long unicode character
 		case 0xE0:
 			return 3;
+
+		// 0b11110000 - Four byte long unicode character
+		case 0xF0:
+			return 4;
 
 		// If the byte does not match, can return 0 to signify an error
 		default:
