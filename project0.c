@@ -48,28 +48,30 @@ int main(int argc, char *argv[])
 
 			isFirstByte = false;
 		}
-		
-		if(ch == ' ' || count == numBytes)
-		{	
-			// Print for testing
-			printf("%s\n", buffer);	
-			
-			for(int i = 0; i < count; i++)
-			{
-				buffer[i] = 0; 
-			}	
-
-			count = 0;
-
-			isFirstByte = true;
-		}
 		else
 		{
-			// Add character to char array
-			buffer[count] = ch;
-			
-			count++;
-		}
+			if(ch == ' ' || count == numBytes)
+                	{
+                        	// Print for testing
+                        	printf("%s\n", buffer);
+
+                        	for(int i = 0; i < count; i++)
+                        	{
+                                	buffer[i] = 0;
+                        	}
+
+                        	count = 0;
+
+                        	isFirstByte = true;
+                	}
+                	else
+                	{
+                        	// Add character to char array
+	                        buffer[count] = ch;
+
+        	                count++;
+                	}
+		}		
 	}
 
 	printOutput(map);
