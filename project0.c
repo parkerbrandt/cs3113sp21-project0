@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	while((ch = getchar()) != EOF)
 	{
 		// If this byte is the first byte, then need to determine how many total bytes
-		if(isFirstByte)
+		if(isFirstByte == TRUE)
 		{
 			numbytes = numBytes(ch);
 
@@ -48,17 +48,19 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			if(ch == ' ' || count == numbytes)
+			if(count == numbytes)
                 	{
                         	// Print for testing
                         	printf("%s\n", buffer);
+				
+				// TODO: Put the character 
 
                         	for(int i = 0; i < count; i++)
                         	{
                                 	buffer[i] = 0;
                         	}
 
-                        	count = 0;
+                        	count = 1;
 
                         	isFirstByte = TRUE;
                 	}
@@ -68,6 +70,9 @@ int main(int argc, char *argv[])
 	                        buffer[count] = ch;
 
         	                count++;
+
+				// TODO: Maybe move above if statement into here?
+				// May be skipping last charcter
                 	}
 		}		
 	}
@@ -109,7 +114,7 @@ int numBytes(char checkByte)
 
 	// Use an & bitwise operator in order to keep the first 4 bits intact while having the last 4 be 0
 	// 0xF0 = 0b11110000
-	char firstFour = checkByte & 0xF0;
+	unsigned char firstFour = checkByte & 0xF0;
 
 	// Use the switch statement to match the high order bits
 	switch(firstFour)
