@@ -41,39 +41,44 @@ int main(int argc, char *argv[])
 
 			// Print for testing
 			printf("%d bytes: ", numbytes);
+				
+			// Check for 1 byte ASCII characters, do not need to add them to array
+			if(numbytes == 1)
+			{
+				printf("%c\n", ch);
 
-			buffer[0] = ch;
-
-			isFirstByte = FALSE;
+			}
+			else
+			{
+				buffer[0] = ch;
+				isFirstByte = FALSE;
+			}
 		}
 		else
 		{
+			// Add a byte to the character array
+			buffer[count] = ch;
+
+			count++;
+			
+
+			// Check if the count has reached the total number of bytes for that character
 			if(count == numbytes)
-                	{
-                        	// Print for testing
-                        	printf("%s\n", buffer);
-				
-				// TODO: Put the character 
+			{
+				// Print for testing
+				printf("%s\n", buffer);
 
-                        	for(int i = 0; i < count; i++)
-                        	{
-                                	buffer[i] = 0;
-                        	}
+				// TODO: Add the character to an array and increment the number of times it occurs
 
-                        	count = 1;
+				// Reset the buffer array
+				for(int i = 0; i < count; i++)
+					buffer[i] = 0;
 
-                        	isFirstByte = TRUE;
-                	}
-                	else
-                	{
-                        	// Add character to char array
-	                        buffer[count] = ch;
-
-        	                count++;
-
-				// TODO: Maybe move above if statement into here?
-				// May be skipping last charcter
-                	}
+				// Reset the counter and isFirstByte variables
+				// so the program can move onto the next character
+				count = 1;
+				isFirstByte = TRUE;
+			}
 		}		
 	}
 
@@ -98,7 +103,6 @@ void printOutput()
 /*
  * A function that returns the total number of bytes of a unicode character
  * based on the control bits 
- * Could also implement as a for loop that counts the number of ones
  */
 int numBytes(char checkByte)
 {
