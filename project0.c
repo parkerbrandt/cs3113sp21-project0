@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define FALSE 0
+#define TRUE 1
+
 #define MAX_CHAR_SIZE 5
-
-
-// Typedefs
-typedef enum {false, true} bool;
-
 
 // Prototype Functions
 void printOutput(struct HashMap *map);
@@ -19,8 +17,8 @@ int main(int argc, char *argv[])
 	// Variables
 	char *buffer;
 	int count = 1;
-	bool isFirstByte = true;
-	int numBytes;
+	int isFirstByte = TRUE;
+	int numbytes;
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
@@ -35,22 +33,22 @@ int main(int argc, char *argv[])
 		// If this byte is the first byte, then need to determine how many total bytes
 		if(isFirstByte)
 		{
-			numBytes = numBytes(ch);
+			numbytes = numBytes(ch);
 
 			// Check for error
-			if(numBytes == 0)
+			if(numbytes == 0)
 				return -1;
 
 			// Print for testing
-			printf("%d bytes: ", numBytes);
+			printf("%d bytes: ", numbytes);
 
 			buffer[0] = ch;
 
-			isFirstByte = false;
+			isFirstByte = FALSE;
 		}
 		else
 		{
-			if(ch == ' ' || count == numBytes)
+			if(ch == ' ' || count == numbytes)
                 	{
                         	// Print for testing
                         	printf("%s\n", buffer);
@@ -62,7 +60,7 @@ int main(int argc, char *argv[])
 
                         	count = 0;
 
-                        	isFirstByte = true;
+                        	isFirstByte = TRUE;
                 	}
                 	else
                 	{
@@ -74,7 +72,7 @@ int main(int argc, char *argv[])
 		}		
 	}
 
-	printOutput(map);
+	// printOutput();
 
 	return 0;
 }
@@ -101,7 +99,7 @@ int numBytes(char checkByte)
 {
 	// First, check the high order bit
 	// 0x80 = 0b10000000
-	char highOrderBit = CheckByte & 0x80;
+	char highOrderBit = checkByte & 0x80;
 	if(highOrderBit == 0)
 	{
 		// If high-order bit is 0, then the character is an ASCII character
