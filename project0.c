@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define FALSE 0
 #define TRUE 1
 
 #define MAX_CHAR_SIZE 5
+#define ARRAY_SIZE 1000
 
 
 // Prototype Functions
-void printOutput();
+void printOutput(char** charArray, int* countArray, int arrayCount);
 int numBytes(char checkByte);
-void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int& arrayCount); 
+void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* arrayCount);
 
 
 // Main Function
@@ -29,12 +31,14 @@ int main(int argc, char *argv[])
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
-	buffer[MAX_CHAR_SIZE - 1] = endOfString;
 
 	// Initialize the two arrays used for counting
 	// Can use realloc() to increase needed memory if necessary
-	charArray = (char**)calloc(32, sizeof(char) * 4);
-	countArray = (int*)calloc(32, sizeof(int));	
+	charArray = (char**)calloc(ARRAY_SIZE, sizeof(char) * 4);
+	for(int i = 0; i < ARRAY_SIZE; i++)
+		charArray[i] = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
+
+	countArray = (int*)calloc(ARRAY_SIZE, sizeof(int));	
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
@@ -51,7 +55,7 @@ int main(int argc, char *argv[])
 				return -1;
 
 			// Print for testing
-			printf("%d bytes: ", numbytes);
+			// printf("%d bytes: ", numbytes);
 				
 			// Check for 1 byte ASCII characters here
 			// Cannot do below because when increment happens it screws it up
@@ -60,9 +64,15 @@ int main(int argc, char *argv[])
 				// Print for testing
 				// printf("%c\n", ch);
 				
-				// TODO: Add character to the array
+				// Add character to the array
 				buffer[0] = ch;
+				buffer[1] = endOfString;
 				
+				addCharToArray(buffer, charArray, countArray, &arrayCount);
+
+				// Reset the array and variables
+				buffer[0] = 0;
+				buffer[1] = 0;
 			}
 			else
 			{
@@ -80,11 +90,16 @@ int main(int argc, char *argv[])
 
 			// Check if the count has reached the total number of bytes for that character
 			if(count == numbytes)
-			{
-				// Print for testing
-				printf("%s\n", buffer);
+			{	
+				// Add the end of string symbol to the end to help with outputting
+				buffer[count] = endOfString;
 
-				// TODO: Add the character to an array and increment the number of times it occurs
+				// Print for testing
+				// printf("%s\n", buffer);
+
+				// Add the character to an array and increment the number of times it occurs
+				addCharToArray(buffer, charArray, countArray, &arrayCount);
+				
 
 				// Reset the buffer array
 				for(int i = 0; i < count; i++)
@@ -113,7 +128,7 @@ int main(int argc, char *argv[])
 /*
  * TODO: Print the output given a character array and an integer array
  */
-void printOutput()
+void printOutput(char** charArray, int* countArray, int arrayCount)
 {
 
 }
@@ -156,7 +171,6 @@ int numBytes(char checkByte)
 		// If the byte does not match, can return 0 to signify an error
 		default:
 			return 0;
-			break;
 	}
 }
 
@@ -164,15 +178,27 @@ int numBytes(char checkByte)
 /*
  * 
  */
-void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int& arrayCount)
+void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* arrayCount)
 {
 	// Loop through character array to check if character already exists or not
 	int doesCharExist = FALSE;
 	int foundIndex = 0;
 
-	for(int i = 0; i < arrayCount; i++)
+	// If the arraycount is 0, then need to just add the character
+	if((*arrayCount) == 0)
 	{
-		if(charArray[i] == unicodeChar)
+		strcpy(charArray[0], unicodeChar);
+		countArray[0]++;
+		(*arrayCount)++;
+
+		return;
+	}
+
+	// Loop through array to see if the character can be found
+	for(int i = 0; i < (*arrayCount); i++)
+	{
+		// Use strcmp to compare the two strings
+		if(strcmp(unicodeChar, charArray[i]) == 0)
 		{
 			doesCharExist = TRUE;
 			foundIndex = i;
@@ -186,8 +212,8 @@ void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int& a
 	}
 	else
 	{
-		arrayCount++;
+		(*arrayCount)++;
 
-		charArray[arrayCount] = unicodeChar;
+		strcpy(charArray[(*arrayCount)], unicodeChar);
 	}
 }
