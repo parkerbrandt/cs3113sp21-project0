@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 	// Deallocate memory used with buffer array
 	free(buffer);
 
-	// printOutput();
+	printOutput();
 
 	return 0;
 }
@@ -130,7 +130,10 @@ int main(int argc, char *argv[])
  */
 void printOutput(char** charArray, int* countArray, int arrayCount)
 {
-
+	for(int i = 0; i < arrayCount; i++)
+	{
+		printf("%s->%d\n", charArray[i], countArray[i]);
+	}
 }
 
 /*
@@ -198,6 +201,7 @@ void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* a
 	for(int i = 0; i < (*arrayCount); i++)
 	{
 		// Use strcmp to compare the two strings
+		// 0 indicates they are equal
 		if(strcmp(unicodeChar, charArray[i]) == 0)
 		{
 			doesCharExist = TRUE;
