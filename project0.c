@@ -6,9 +6,11 @@
 
 #define MAX_CHAR_SIZE 5
 
+
 // Prototype Functions
-void printOutput(struct HashMap *map);
+void printOutput();
 int numBytes(char checkByte);
+void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int& arrayCount); 
 
 
 // Main Function
@@ -19,14 +21,23 @@ int main(int argc, char *argv[])
 	int count = 1;
 	int isFirstByte = TRUE;
 	int numbytes;
+	char endOfString = '\0';
+
+	char **charArray;
+	int *countArray;
+	int arrayCount = 0;
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
-	buffer[MAX_CHAR_SIZE - 1] = '\0';
+	buffer[MAX_CHAR_SIZE - 1] = endOfString;
+
+	// Initialize the two arrays used for counting
+	// Can use realloc() to increase needed memory if necessary
+	charArray = (char**)calloc(32, sizeof(char) * 4);
+	countArray = (int*)calloc(32, sizeof(int));	
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
-	// TODO: Add characters and count to arrays
 	char ch;
 	while((ch = getchar()) != EOF)
 	{
@@ -42,11 +53,16 @@ int main(int argc, char *argv[])
 			// Print for testing
 			printf("%d bytes: ", numbytes);
 				
-			// Check for 1 byte ASCII characters, do not need to add them to array
+			// Check for 1 byte ASCII characters here
+			// Cannot do below because when increment happens it screws it up
 			if(numbytes == 1)
 			{
-				printf("%c\n", ch);
-
+				// Print for testing
+				// printf("%c\n", ch);
+				
+				// TODO: Add character to the array
+				buffer[0] = ch;
+				
 			}
 			else
 			{
@@ -82,6 +98,9 @@ int main(int argc, char *argv[])
 		}		
 	}
 
+	// Deallocate memory used with buffer array
+	free(buffer);
+
 	// printOutput();
 
 	return 0;
@@ -92,11 +111,10 @@ int main(int argc, char *argv[])
 // Function Declarations
 
 /*
- *
+ * TODO: Print the output given a character array and an integer array
  */
 void printOutput()
 {
-	
 
 }
 
@@ -139,5 +157,37 @@ int numBytes(char checkByte)
 		default:
 			return 0;
 			break;
+	}
+}
+
+
+/*
+ * 
+ */
+void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int& arrayCount)
+{
+	// Loop through character array to check if character already exists or not
+	int doesCharExist = FALSE;
+	int foundIndex = 0;
+
+	for(int i = 0; i < arrayCount; i++)
+	{
+		if(charArray[i] == unicodeChar)
+		{
+			doesCharExist = TRUE;
+			foundIndex = i;
+		}
+	}
+
+	// If the character was found, then increment the appropriate spot in the integer array, otherwise add it at the end
+	if(doesCharExist == TRUE)
+	{
+		countArray[foundIndex]++;
+	}
+	else
+	{
+		arrayCount++;
+
+		charArray[arrayCount] = unicodeChar;
 	}
 }
