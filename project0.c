@@ -27,14 +27,14 @@ int main(int argc, char *argv[])
 	char **charArray;
 	int *countArray;
 	int arrayCount = 0;
-	long arraySize = 1024;
+	long arraySize = 10000;
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
 	// Initialize the two arrays used for counting
 	// Can use realloc() to increase needed memory if necessary
-	charArray = (char**)calloc(arraySize, sizeof(char) * 4);
+	charArray = (char**)malloc(arraySize * sizeof(char) * 4);
 	for(int i = 0; i < arraySize; i++)
 		charArray[i] = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
