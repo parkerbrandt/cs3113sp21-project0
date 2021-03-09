@@ -5,4 +5,4 @@ all: $(SRCS)
 	$(CC) $(SRCS) -o project0
 
 clean:
-	rm *.exe *.o *.out project0
+	rm project0
