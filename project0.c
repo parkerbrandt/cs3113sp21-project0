@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 	char **charArray;
 	int *countArray;
 	int arrayCount = 0;
-	long arraySize = 50000;
+	long arraySize = 1024;
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
