@@ -6,7 +6,6 @@
 #define TRUE 1
 
 #define MAX_CHAR_SIZE 5
-#define ARRAY_SIZE 1000
 
 
 // Prototype Functions
@@ -28,17 +27,18 @@ int main(int argc, char *argv[])
 	char **charArray;
 	int *countArray;
 	int arrayCount = 0;
+	long arraySize = 50000;
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
 	// Initialize the two arrays used for counting
 	// Can use realloc() to increase needed memory if necessary
-	charArray = (char**)calloc(ARRAY_SIZE, sizeof(char) * 4);
-	for(int i = 0; i < ARRAY_SIZE; i++)
+	charArray = (char**)calloc(arraySize, sizeof(char) * 4);
+	for(int i = 0; i < arraySize; i++)
 		charArray[i] = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
-	countArray = (int*)calloc(ARRAY_SIZE, sizeof(int));	
+	countArray = (int*)calloc(arraySize, sizeof(int));	
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
