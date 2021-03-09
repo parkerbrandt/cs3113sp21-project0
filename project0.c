@@ -13,7 +13,7 @@
 void printOutput(char** charArray, int* countArray, int arrayCount);
 int numBytes(char checkByte);
 void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* arrayCount);
-
+void bubbleSort(char** charArray, int* countArray, int arrayCount);
 
 // Main Function
 int main(int argc, char *argv[])
@@ -116,7 +116,10 @@ int main(int argc, char *argv[])
 	// Deallocate memory used with buffer array
 	free(buffer);
 
-	printOutput();
+	// Sort the array in descending order and then output it
+	bubbleSort(charArray, countArray, arrayCount);
+	printOutput(charArray, countArray, arrayCount);
+
 
 	return 0;
 }
@@ -126,7 +129,8 @@ int main(int argc, char *argv[])
 // Function Declarations
 
 /*
- * TODO: Print the output given a character array and an integer array
+ * Print the output given a character array and an integer array
+ * Print format: Character->Count
  */
 void printOutput(char** charArray, int* countArray, int arrayCount)
 {
@@ -179,7 +183,8 @@ int numBytes(char checkByte)
 
 
 /*
- * 
+ * Adds a unicode character to the string array, and then will increment its count in the corresponding spot in the 
+ * count array
  */
 void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* arrayCount)
 {
@@ -220,4 +225,33 @@ void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* a
 
 		strcpy(charArray[(*arrayCount)], unicodeChar);
 	}
+}
+
+/*
+ * A recursive bubble sort from geeksforgeeks.org to sort the arrays in descending order
+ */
+void bubbleSort(char** charArray, int* countArray, int arrayCount)
+{
+	if(arrayCount == 1)
+		return;
+
+	for(int i = 0; i < arrayCount - 1; i++)
+	{
+		if(countArray[i] < countArray[i + 1])
+		{
+			// Swap the two variables in both the char array and count array
+			// Swap in the char array
+			char *temp = charArray[i];
+			charArray[i] = charArray[i+1];
+			charArray[i+1] = temp;
+
+			// Swap in the count array
+			int numTemp = countArray[i];
+			countArray[i] = countArray[i+1];
+			countArray[i+1] = numTemp;
+		}
+	}
+
+	// The largest element is complete, now to do the rest of the array
+	bubbleSort(charArray, countArray, arrayCount - 1);
 }
