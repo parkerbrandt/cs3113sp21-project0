@@ -136,7 +136,9 @@ void printOutput(char** charArray, int* countArray, int arrayCount)
 {
 	for(int i = 0; i < arrayCount; i++)
 	{
-		printf("%s->%d\n", charArray[i], countArray[i]);
+		// Ran into minor error with outputting
+		if(countArray[i] != 0)
+			printf("%s->%d\n", charArray[i], countArray[i]);
 	}
 }
 
@@ -224,6 +226,7 @@ void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* a
 		(*arrayCount)++;
 
 		strcpy(charArray[(*arrayCount)], unicodeChar);
+		countArray[(*arrayCount)]++;
 	}
 }
 
