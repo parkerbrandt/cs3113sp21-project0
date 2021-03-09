@@ -34,11 +34,11 @@ int main(int argc, char *argv[])
 
 	// Initialize the two arrays used for counting
 	// Can use realloc() to increase needed memory if necessary
-	charArray = (char**)malloc(arraySize * sizeof(char) * 4);
+	charArray = (char**)malloc(arraySize * sizeof(char) * 8);
 	for(int i = 0; i < arraySize; i++)
 		charArray[i] = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
-	countArray = (int*)calloc(arraySize, sizeof(int));	
+	countArray = (int*)calloc(arraySize * 10, sizeof(int));	
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
