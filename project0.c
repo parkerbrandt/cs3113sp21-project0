@@ -14,7 +14,7 @@ unsigned long arraySize = 175000;
 
 // Prototype Functions
 void printOutput(char** charArray, int* countArray, int arrayCount);
-int numBytes(char checkByte);
+int numBytes(unsigned char checkByte);
 void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* arrayCount);
 void bubbleSort(char** charArray, int* countArray, int arrayCount);
 
@@ -22,13 +22,13 @@ void bubbleSort(char** charArray, int* countArray, int arrayCount);
 int main(int argc, char *argv[])
 {
 	// Variables
-	char *buffer;
+	unsigned char *buffer;
 	int count = 1;
 	int isFirstByte = TRUE;
 	int numbytes;
 	char endOfString = '\0';
 
-	char **charArray;
+	unsigned char **charArray;
 	int *countArray;
 	int arrayCount = 0;
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
-	char ch;
+	unsigned char ch;
 	while((ch = getchar()) != EOF)
 	{
 		// If this byte is the first byte, then need to determine how many total bytes
@@ -149,7 +149,7 @@ void printOutput(char** charArray, int* countArray, int arrayCount)
  * A function that returns the total number of bytes of a unicode character
  * based on the control bits 
  */
-int numBytes(char checkByte)
+int numBytes(unsigned char checkByte)
 {
 	// First, check the high order bit
 	// 0x80 = 0b10000000
@@ -161,29 +161,14 @@ int numBytes(char checkByte)
 	}
 
 
-	// Use an & bitwise operator in order to keep the first 4 bits intact while having the last 4 be 0
-	// 0xF0 = 0b11110000
-	unsigned char firstFour = checkByte & 0xF0;
+	// Need to find the number of ones before a 0
+	// Previously used a switch statement, but that didn't account for extra ones that may be causing issues
+	
+	// New method is to use the bitwise & with different numbers to determine one by one the number of bytes
+	// There is probably a more clever solution to this using the << operator
+	unsigned char testByte = checkByte & 0xE0;
 
-	// Use the switch statement to match the high order bits
-	switch(firstFour)
-	{
-		// 0b11000000 - Two byte long unicode character
-		case 0xC0:
-			return 2;
-		
-		// 0b11100000 - Three byte long unicode character
-		case 0xE0:
-			return 3;
 
-		// 0b11110000 - Four byte long unicode character
-		case 0xF0:
-			return 4;
-
-		// If the byte does not match, can return 0 to signify an error
-		default:
-			return 0;
-	}
 }
 
 
