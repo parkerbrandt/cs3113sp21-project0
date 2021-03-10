@@ -9,12 +9,12 @@
 
 
 // Global variables
-unsigned long arraySize = 175000;
+unsigned long arraySize = 1500000;
 
 
 // Prototype Functions
 void printOutput(char** charArray, int* countArray, int arrayCount);
-int numBytes(unsigned char checkByte);
+int numBytes(char checkByte);
 void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* arrayCount);
 void bubbleSort(char** charArray, int* countArray, int arrayCount);
 
@@ -22,13 +22,13 @@ void bubbleSort(char** charArray, int* countArray, int arrayCount);
 int main(int argc, char *argv[])
 {
 	// Variables
-	unsigned char *buffer;
+	char *buffer;
 	int count = 1;
 	int isFirstByte = TRUE;
 	int numbytes;
 	char endOfString = '\0';
 
-	unsigned char **charArray;
+	char **charArray;
 	int *countArray;
 	int arrayCount = 0;
 
@@ -37,15 +37,15 @@ int main(int argc, char *argv[])
 
 	// Initialize the two arrays used for counting
 	// Can use realloc() to increase needed memory if necessary
-	charArray = (char**)calloc(arraySize, sizeof(char) * 8);
+	charArray = (char**)malloc(arraySize * sizeof(*charArray));
 	for(int i = 0; i < arraySize; i++)
 		charArray[i] = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
-	countArray = (int*)calloc(arraySize, sizeof(int));	
+	countArray = (int*)malloc(arraySize * sizeof(*countArray));	
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
-	unsigned char ch;
+	char ch;
 	while((ch = getchar()) != EOF)
 	{
 		// If this byte is the first byte, then need to determine how many total bytes
@@ -55,7 +55,10 @@ int main(int argc, char *argv[])
 
 			// Check for error
 			if(numbytes == 0)
+			{
+				printf("Error\n");
 				return -1;
+			}
 
 			// Print for testing
 			// printf("%d bytes: ", numbytes);
@@ -64,13 +67,13 @@ int main(int argc, char *argv[])
 			// Cannot do below because when increment happens it screws it up
 			if(numbytes == 1)
 			{
-				// Print for testing
-				// printf("%c\n", ch);
-				
 				// Add character to the array
 				buffer[0] = ch;
 				buffer[1] = endOfString;
 				
+				// Print for testing
+				// printf("%s\n", buffer);
+
 				addCharToArray(buffer, charArray, countArray, &arrayCount);
 
 				// Reset the array and variables
@@ -121,6 +124,7 @@ int main(int argc, char *argv[])
 
 	// Sort the array in descending order and then output it
 	bubbleSort(charArray, countArray, arrayCount);
+
 	printOutput(charArray, countArray, arrayCount);
 
 
@@ -149,7 +153,7 @@ void printOutput(char** charArray, int* countArray, int arrayCount)
  * A function that returns the total number of bytes of a unicode character
  * based on the control bits 
  */
-int numBytes(unsigned char checkByte)
+int numBytes(char checkByte)
 {
 	// First, check the high order bit
 	// 0x80 = 0b10000000
@@ -166,9 +170,34 @@ int numBytes(unsigned char checkByte)
 	
 	// New method is to use the bitwise & with different numbers to determine one by one the number of bytes
 	// There is probably a more clever solution to this using the << operator
+	
+	// 0xE0 = 0b11100000
 	unsigned char testByte = checkByte & 0xE0;
+	if(testByte == 0xC0)
+		return 2;
 
+	// 0xF0 = 0b11110000
+	testByte = checkByte & 0xF0;
+	if(testByte == 0xE0)
+		return 3;
 
+	// 0xF8 = 0b11111000
+	testByte = checkByte & 0xF8;
+	if(testByte == 0xF0)
+		return 4;
+
+	// 0xFC = 0b11111100
+	testByte = checkByte & 0xFC;
+	if(testByte == 0xF8)
+		return 5;
+
+	// 0xFE = 0b11111110
+	testByte = checkByte & 0xFE;
+	if(testByte == 0xFC)
+		return 6;
+
+	// If it fails, just return 0
+	return 0;
 }
 
 
