@@ -8,6 +8,10 @@
 #define MAX_CHAR_SIZE 5
 
 
+// Global variables
+unsigned long arraySize = 175000;
+
+
 // Prototype Functions
 void printOutput(char** charArray, int* countArray, int arrayCount);
 int numBytes(char checkByte);
@@ -27,18 +31,17 @@ int main(int argc, char *argv[])
 	char **charArray;
 	int *countArray;
 	int arrayCount = 0;
-	long arraySize = 10000;
 
 	// Initialize the buffer array
 	buffer = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
 	// Initialize the two arrays used for counting
 	// Can use realloc() to increase needed memory if necessary
-	charArray = (char**)calloc(arraySize * 40, sizeof(char) * 8);
+	charArray = (char**)calloc(arraySize, sizeof(char) * 8);
 	for(int i = 0; i < arraySize; i++)
 		charArray[i] = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
-	countArray = (int*)calloc(arraySize * 40, sizeof(int));	
+	countArray = (int*)calloc(arraySize, sizeof(int));	
 
 	// Main while loop to get characters from STDIN
 	// Will then add the char to the char array and increase the count of each character
