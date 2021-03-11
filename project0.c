@@ -104,8 +104,7 @@ int main(int argc, char *argv[])
 				// printf("%s\n", buffer);
 
 				// Add the character to an array and increment the number of times it occurs
-				addCharToArray(buffer, charArray, countArray, &arrayCount);
-				printf("Count: %d\n", arrayCount);	
+				addCharToArray(buffer, charArray, countArray, &arrayCount);	
 
 				// Reset the buffer array
 				for(int i = 0; i < count; i++)
