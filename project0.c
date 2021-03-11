@@ -5,11 +5,11 @@
 #define FALSE 0
 #define TRUE 1
 
-#define MAX_CHAR_SIZE 5
+#define MAX_CHAR_SIZE 7
 
 
 // Global variables
-unsigned long arraySize = 1500000;
+unsigned long arraySize = 3000000;
 
 
 // Prototype Functions
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
 	// Initialize the two arrays used for counting
 	// Can use realloc() to increase needed memory if necessary
-	charArray = (char**)malloc(arraySize * sizeof(*charArray));
+	charArray = (char**)malloc(arraySize * MAX_CHAR_SIZE * sizeof(*charArray));
 	for(int i = 0; i < arraySize; i++)
 		charArray[i] = (char*)calloc(MAX_CHAR_SIZE, sizeof(char));
 
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 			}
 
 			// Print for testing
-			// printf("%d bytes: ", numbytes);
+			printf("%d bytes: ", numbytes);
 				
 			// Check for 1 byte ASCII characters here
 			// Cannot do below because when increment happens it screws it up
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 				buffer[1] = endOfString;
 				
 				// Print for testing
-				// printf("%s\n", buffer);
+				printf("%s\n", buffer);
 
 				addCharToArray(buffer, charArray, countArray, &arrayCount);
 
@@ -101,11 +101,11 @@ int main(int argc, char *argv[])
 				buffer[count] = endOfString;
 
 				// Print for testing
-				// printf("%s\n", buffer);
+				printf("%s\n", buffer);
 
 				// Add the character to an array and increment the number of times it occurs
 				addCharToArray(buffer, charArray, countArray, &arrayCount);
-				
+				printf("Count: %d\n", arrayCount);	
 
 				// Reset the buffer array
 				for(int i = 0; i < count; i++)
@@ -123,8 +123,10 @@ int main(int argc, char *argv[])
 	free(buffer);
 
 	// Sort the array in descending order and then output it
+	printf("Bubble Sort\n");
 	bubbleSort(charArray, countArray, arrayCount);
 
+	printf("Print\n");
 	printOutput(charArray, countArray, arrayCount);
 
 
@@ -248,30 +250,32 @@ void addCharToArray(char* unicodeChar, char** charArray, int* countArray, int* a
 }
 
 /*
- * A recursive bubble sort from geeksforgeeks.org to sort the arrays in descending order
+ * A non-recursive bubble sort from geeksforgeeks.org to sort the arrays in descending order
+ * Tried to use a recursive bubble sort, but encountered stack overflow
  */
 void bubbleSort(char** charArray, int* countArray, int arrayCount)
 {
-	if(arrayCount == 1)
-		return;
+	// Variables
+	char *temp;
+	int numTemp;
 
-	for(int i = 0; i < arrayCount - 1; i++)
+	int i, j;
+	for(i = 0; i < arrayCount - 1; i++)
 	{
-		if(countArray[i] < countArray[i + 1])
+		for(j = 0; j < arrayCount - i - 1; j++)
 		{
-			// Swap the two variables in both the char array and count array
-			// Swap in the char array
-			char *temp = charArray[i];
-			charArray[i] = charArray[i+1];
-			charArray[i+1] = temp;
+			if(countArray[j] < countArray[j+1])
+			{
+				// Swap the elements in the character array
+				// and in the count array
+				temp = charArray[j];
+				charArray[j] = charArray[j+1];
+				charArray[j+1] = temp;
 
-			// Swap in the count array
-			int numTemp = countArray[i];
-			countArray[i] = countArray[i+1];
-			countArray[i+1] = numTemp;
+				numTemp = countArray[j];
+				countArray[j] = countArray[j+1];
+				countArray[j+1] = numTemp;
+			}
 		}
-	}
-
-	// The largest element is complete, now to do the rest of the array
-	bubbleSort(charArray, countArray, arrayCount - 1);
+	}	
 }
