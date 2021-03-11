@@ -9,7 +9,7 @@ to compile the program, and then type:</br>
 in order to run the program with "filename" replaced with whatever file is to be used for input
 
 <h3>Known Bugs & Assumptions</h3>
-The main assumption I had to make is on the size of the arrays I am using.
+The main assumption I had to make is on the size of the arrays I am using.</br>
 
 
 <h3>Logic</h3>
@@ -33,4 +33,4 @@ the first byte has been consumed from the input. UTF-8 encoding is assumed to be
 This function will add the Unicode character, unicode char to the string array, charArray. The function will also check if the character already exists, and if so, it will just increment the count in the integer array, countArray.</br></br>
 
 <b>void bubbleSort(char** charArray, int* countArray, int arrayCount)</b></br>
-This function sorts the corresponding character and integer arrays using a recursive bubble sort algorithm in descending order. The character array and integer array are changed at the same time so all numbers that correspond should be kept together.
+This function sorts the corresponding character and integer arrays using a non-recursive bubble sort algorithm in descending order. The character array and integer array are changed at the same time so all numbers that correspond should be kept together.
