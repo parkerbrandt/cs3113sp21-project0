@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 			}
 
 			// Print for testing
-			printf("%d bytes: ", numbytes);
+			// printf("%d bytes: ", numbytes);
 				
 			// Check for 1 byte ASCII characters here
 			// Cannot do below because when increment happens it screws it up
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 				buffer[1] = endOfString;
 				
 				// Print for testing
-				printf("%s\n", buffer);
+				// printf("%s\n", buffer);
 
 				addCharToArray(buffer, charArray, countArray, &arrayCount);
 
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 				buffer[count] = endOfString;
 
 				// Print for testing
-				printf("%s\n", buffer);
+				// printf("%s\n", buffer);
 
 				// Add the character to an array and increment the number of times it occurs
 				addCharToArray(buffer, charArray, countArray, &arrayCount);
@@ -123,10 +123,8 @@ int main(int argc, char *argv[])
 	free(buffer);
 
 	// Sort the array in descending order and then output it
-	printf("Bubble Sort\n");
 	bubbleSort(charArray, countArray, arrayCount);
 
-	printf("Print\n");
 	printOutput(charArray, countArray, arrayCount);
 
 
